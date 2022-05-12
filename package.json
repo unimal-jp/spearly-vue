@@ -1,0 +1,75 @@
+{
+  "name": "@spearly/vue",
+  "version": "0.1.0",
+  "description": "This package allows you to easily implement Spearly in your Vue project!",
+  "main": "dist/cjs/spearly-vue.js",
+  "module": "dist/esm/spearly-vue.js",
+  "unpkg": "dist/umd/spearly-vue.js",
+  "types": "dist/cjs/index.d.ts",
+  "scripts": {
+    "lint": "eslint --ext .ts,.tsx,.vue --ignore-path .eslintignore . || exit 0",
+    "test": "jest --config ./jest.config.js",
+    "build": "rollup -c",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unimal-jp/spearly-vue.git"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "keywords": [
+    "spearly",
+    "spearlycms",
+    "headless",
+    "cms",
+    "vue"
+  ],
+  "author": "akoarum",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/unimal-jp/spearly-vue/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "homepage": "https://github.com/unimal-jp/spearly-vue#readme",
+  "devDependencies": {
+    "@babel/preset-env": "^7.17.10",
+    "@rollup/plugin-buble": "^0.21.3",
+    "@rollup/plugin-commonjs": "^22.0.0",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@types/jest": "^27.5.1",
+    "@typescript-eslint/parser": "^5.23.0",
+    "@vue/test-utils": "^2.0.0-rc.21",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-plugin-syntax-jsx": "^6.18.0",
+    "babel-plugin-transform-vue-jsx": "^3.7.0",
+    "eslint": "^8.15.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-vue": "^8.7.1",
+    "flush-promises": "^1.0.2",
+    "husky": "^8.0.1",
+    "jest": "^26.6.3",
+    "lint-staged": "^12.4.1",
+    "prettier": "^2.6.2",
+    "rollup": "^2.72.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.31.2",
+    "rollup-plugin-vue": "^6.0.0",
+    "ts-jest": "^26.5.6",
+    "vue-eslint-parser": "^9.0.1",
+    "vue-jest": "^5.0.0-alpha.10",
+    "vue-template-compiler": "^2.6.14"
+  },
+  "dependencies": {
+    "@spearly/sdk-js": "^0.2.0",
+    "@vue/compiler-sfc": "^3.2.33",
+    "typescript": "^4.6.4"
+  },
+  "peerDependencies": {
+    "vue": "^3.2.33"
+  }
+}
