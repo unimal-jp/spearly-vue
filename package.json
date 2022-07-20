@@ -32,7 +32,8 @@
     "url": "https://github.com/unimal-jp/spearly-vue/issues"
   },
   "files": [
-    "dist"
+    "dist",
+    "types"
   ],
   "homepage": "https://github.com/unimal-jp/spearly-vue#readme",
   "devDependencies": {
@@ -60,12 +61,13 @@
     "rollup-plugin-typescript2": "^0.31.2",
     "rollup-plugin-vue": "^6.0.0",
     "ts-jest": "^26.5.6",
+    "vue": "^3.2.37",
     "vue-eslint-parser": "^9.0.1",
     "vue-jest": "^5.0.0-alpha.10",
     "vue-template-compiler": "^2.6.14"
   },
   "dependencies": {
-    "@spearly/sdk-js": "^0.2.0",
+    "@spearly/sdk-js": "^1.0.0-next.2",
     "@vue/compiler-sfc": "^3.2.33",
     "typescript": "^4.6.4"
   },

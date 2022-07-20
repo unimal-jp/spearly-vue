@@ -5,11 +5,14 @@
     "target": "es5",
     "module": "esnext",
     "moduleResolution": "node",
+    "importHelpers": true,
     "esModuleInterop": true,
     "declaration": true,
     "strict": true,
     "skipLibCheck": true,
     "pretty": true,
+    "jsx": "preserve",
+    "lib": ["es6", "dom", "es2020"],
     "types": ["@spearly/sdk-js", "jest"]
   },
   "include": [
