@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SpearlyForm initialized snapshot 1`] = `
+<div>
+  
+  <div
+    class="spearly-form"
+  >
+    
+    <h1
+      class="spearly-form-title"
+    />
+    <p
+      class="spearly-form-description"
+    />
+    <!--v-if-->
+    <!--v-if-->
+    
+    
+    <input
+      name="_spearly_gotcha"
+      style="position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden;"
+      tabindex="-1"
+      type="text"
+    />
+    <!--v-if-->
+    <!--v-if-->
+    <div
+      class="spearly-form-btns"
+    >
+      <button
+        class="spearly-form-submit"
+      >
+        <span>
+          送信
+        </span>
+      </button>
+      <!--v-if-->
+    </div>
+    
+  </div>
+  
+</div>
+`;

@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SpearlyContentList initialized snapshot 1`] = `
+<div
+  class="spearly-content-list"
+>
+  <div>
+    
+    <div>
+      
+      <h1>
+        test
+      </h1>
+      
+    </div>
+    <div>
+      
+      <h1>
+        test
+      </h1>
+      
+    </div>
+    <div>
+      
+      <h1>
+        test
+      </h1>
+      
+    </div>
+    
+  </div>
+  
+  
+</div>
+`;

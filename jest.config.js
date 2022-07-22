@@ -13,6 +13,6 @@ module.exports = {
     '^.+\\.tsx?$': 'ts-jest',
   },
   testMatch: [
-    '<rootDir>/src/specs/**/*.spec.{js,ts}',
+    '<rootDir>/src/**/*.spec.{js,ts}',
   ],
 }
