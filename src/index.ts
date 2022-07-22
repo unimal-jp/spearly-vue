@@ -1,5 +1,5 @@
 import { SpearlyApiClient } from '@spearly/sdk-js'
-import { SpearlyContentList, SpearlyContent } from './components'
+import { SpearlyContentList, SpearlyContent, SpearlyForm } from './components'
 
 declare module '@vue/runtime-core' {
   export interface ComponentCustomProperties {
@@ -18,6 +18,7 @@ const plugin = {
     app.provide('$spearly', apiClient)
     app.component('spearly-content-list', SpearlyContentList)
     app.component('spearly-content', SpearlyContent)
+    app.component('spearly-form', SpearlyForm)
   },
 }
 
