@@ -39,14 +39,15 @@
                 </p>
               </template>
 
-              <template v-else-if="field.inputType === 'text'">
+              <template v-else-if="['text', 'number', 'email', 'tel', 'url'].includes(field.inputType)">
                 <input
                   :id="field.identifier"
                   v-model="state.answers[field.identifier]"
                   :required="field.required"
                   :disabled="!isActive"
+                  :aria-invalid="!!state.errors.get(field.identifier)"
                   :aria-describedby="field.description ? `${field.identifier}-description` : undefined"
-                  type="text"
+                  :type="field.inputType"
                   class="spearly-form-input"
                 />
               </template>
@@ -57,6 +58,7 @@
                   v-model="state.answers[field.identifier]"
                   :required="field.required"
                   :disabled="!isActive"
+                  :aria-invalid="!!state.errors.get(field.identifier)"
                   :aria-describedby="field.description ? `${field.identifier}-description` : undefined"
                   class="spearly-form-textarea"
                 />
@@ -76,6 +78,16 @@
                   <span>{{ option }}</span>
                 </label>
               </template>
+
+              <p
+                v-if="state.errors.get(field.identifier)"
+                :id="`spearly-form-field-${field.identifier}-error`"
+                role="alert"
+                aria-live="assertive"
+                class="spearly-form-field-error"
+              >
+                {{ state.errors.get(field.identifier) }}
+              </p>
 
               <p
                 v-if="field.description"
@@ -98,7 +110,7 @@
               <span>このフォームは現在受付期間外です。</span>
             </p>
 
-            <p v-if="state.validateError" class="spearly-form-error">
+            <p v-if="hasError" class="spearly-form-error">
               <span>入力されていない項目があります。</span>
             </p>
 
@@ -141,8 +153,8 @@ export type Props = {
 export type State = {
   form: { createdAt: Date | null } & Omit<SpearlyForm, 'createdAt'>
   answers: { [key: string]: string | string[]; _spearly_gotcha: string }
+  errors: Map<string, string>
   error: boolean
-  validateError: boolean
   confirm: boolean
   submitted: boolean
   isLoaded: boolean
@@ -166,7 +178,7 @@ const state = reactive<State>({
   },
   answers: { _spearly_gotcha: '' },
   error: false,
-  validateError: false,
+  errors: new Map(),
   confirm: false,
   submitted: false,
   isLoaded: false,
@@ -220,17 +232,63 @@ const isActive = computed(() => {
 })
 
 const validate = () => {
-  const requiredFieldIds = state.form.fields.filter((field) => field.required).map((field) => field.identifier)
-  return requiredFieldIds.every((identifier) => !!state.answers[identifier])
+  state.errors.clear()
+
+  const requiredFields = state.form.fields.filter((field) => field.required).map((field) => field.identifier)
+  const numberFields = state.form.fields
+    .filter((field) => field.inputType === 'number')
+    .map((field) => field.identifier)
+  const emailFields = state.form.fields.filter((field) => field.inputType === 'email').map((field) => field.identifier)
+  const telFields = state.form.fields.filter((field) => field.inputType === 'tel').map((field) => field.identifier)
+  const urlFields = state.form.fields.filter((field) => field.inputType === 'url').map((field) => field.identifier)
+
+  requiredFields.forEach((identifier) => {
+    if (Array.isArray(state.answers[identifier]) && !state.answers.length) {
+      state.errors.set(identifier, '選択してください。')
+      return
+    }
+
+    if (!state.answers[identifier]) {
+      state.errors.set(identifier, '入力してください。')
+    }
+  })
+
+  numberFields.forEach((identifier) => {
+    if (state.answers[identifier] && !/^[0-9]+$/.test(state.answers[identifier] as string)) {
+      state.errors.set(identifier, '数字を入力してください。')
+    }
+  })
+
+  emailFields.forEach((identifier) => {
+    if (state.answers[identifier] && !/^[\w\-._]+@[\w\-._]+\.[A-Za-z]+$/.test(state.answers[identifier] as string)) {
+      state.errors.set(identifier, 'メールアドレスの形式で入力してください。')
+    }
+  })
+
+  telFields.forEach((identifier) => {
+    if (state.answers[identifier] && !/^[0-9\-]+$/.test(state.answers[identifier] as string)) {
+      state.errors.set(identifier, '電話番号を入力してください。')
+    }
+  })
+
+  urlFields.forEach((identifier) => {
+    if (
+      state.answers[identifier] &&
+      !/^https?:\/\/[\w!?/+\-_~;.,*&@#$%()'[\]]+?\..*?$/.test(state.answers[identifier] as string)
+    ) {
+      state.errors.set(identifier, 'URLを入力してください。')
+    }
+  })
 }
+
+const hasError = computed(() => {
+  return !!state.errors.size
+})
 
 const onClick = () => {
   if (!state.confirm) {
-    if (!validate()) {
-      state.validateError = true
-      return
-    }
-    state.validateError = false
+    validate()
+    if (hasError.value) return
     state.confirm = true
     return
   }
