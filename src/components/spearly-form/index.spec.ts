@@ -212,12 +212,6 @@ describe('SpearlyForm', () => {
     })
 
     describe('submit button action', () => {
-      it('error text should be displayed if all required fields are not filled in', async () => {
-        wrapper.find('.spearly-form-submit').trigger('click')
-        await flushPromises()
-        expect(wrapper.find('.spearly-form-error').text()).toBe('入力されていない項目があります。')
-      })
-
       it('if everything has been filled, move to the confirmation screen', async () => {
         wrapper.findAll('.spearly-form-input')[0].setValue('example name')
         wrapper.findAll('.spearly-form-input')[1].setValue('test@example.com')
@@ -225,6 +219,78 @@ describe('SpearlyForm', () => {
         wrapper.find('.spearly-form-submit').trigger('click')
         await flushPromises()
         expect(wrapper.findAll('.spearly-form-answer-confirm').length).toBe(4)
+      })
+    })
+
+    describe('form validation', () => {
+      it('error text should be displayed if all required fields are not filled in', async () => {
+        wrapper.find('.spearly-form-submit').trigger('click')
+        await flushPromises()
+        expect(wrapper.find('.spearly-form-field-error').text()).toBe('入力してください。')
+        expect(wrapper.find('.spearly-form-error').text()).toBe('入力されていない項目があります。')
+      })
+
+      it('if the value in the email field is not an email, an error should be displayed', async () => {
+        const latestMock = Object.assign({}, getFormLatestMockData, {
+          fields: [
+            {
+              identifier: 'email',
+              inputType: 'email',
+              name: 'Email',
+              order: 1,
+              required: false,
+            },
+          ],
+        })
+        wrapper = wrapperFactory({ id: 'id' }, jest.fn().mockResolvedValue(latestMock)).wrapper
+        await flushPromises()
+        wrapper.findAll('.spearly-form-input[type="email"]')[0].setValue('test')
+        wrapper.find('.spearly-form-submit').trigger('click')
+        await flushPromises()
+        expect(wrapper.find('.spearly-form-error').text()).toBe('入力されていない項目があります。')
+        expect(wrapper.findAll('.spearly-form-field-error')[0].text()).toBe('メールアドレスの形式で入力してください。')
+      })
+
+      it('if the value in the tel field is not an tel, an error should be displayed', async () => {
+        const latestMock = Object.assign({}, getFormLatestMockData, {
+          fields: [
+            {
+              identifier: 'tel',
+              inputType: 'tel',
+              name: 'TEL',
+              order: 1,
+              required: false,
+            },
+          ],
+        })
+        wrapper = wrapperFactory({ id: 'id' }, jest.fn().mockResolvedValue(latestMock)).wrapper
+        await flushPromises()
+        wrapper.findAll('.spearly-form-input[type="tel"]')[0].setValue('test')
+        wrapper.find('.spearly-form-submit').trigger('click')
+        await flushPromises()
+        expect(wrapper.find('.spearly-form-error').text()).toBe('入力されていない項目があります。')
+        expect(wrapper.findAll('.spearly-form-field-error')[0].text()).toBe('電話番号を入力してください。')
+      })
+
+      it('if the value in the url field is not an url, an error should be displayed', async () => {
+        const latestMock = Object.assign({}, getFormLatestMockData, {
+          fields: [
+            {
+              identifier: 'url',
+              inputType: 'url',
+              name: 'URL',
+              order: 1,
+              required: false,
+            },
+          ],
+        })
+        wrapper = wrapperFactory({ id: 'id' }, jest.fn().mockResolvedValue(latestMock)).wrapper
+        await flushPromises()
+        wrapper.findAll('.spearly-form-input[type="url"]')[0].setValue('test')
+        wrapper.find('.spearly-form-submit').trigger('click')
+        await flushPromises()
+        expect(wrapper.find('.spearly-form-error').text()).toBe('入力されていない項目があります。')
+        expect(wrapper.findAll('.spearly-form-field-error')[0].text()).toBe('URLを入力してください。')
       })
     })
 
