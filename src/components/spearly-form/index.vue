@@ -79,6 +79,19 @@
                 </label>
               </template>
 
+              <template v-else-if="field.inputType === 'file'">
+                <label class="spearly-form-file">
+                  <input
+                    :id="field.identifier"
+                    :required="field.required"
+                    :accept="field.data?.fileExtensions?.map((extension) => `.${extension}`).join(',')"
+                    type="file"
+                    class="spearly-form-file-input"
+                    @change="onChangeFile($event, field.identifier)"
+                  />
+                </label>
+              </template>
+
               <p
                 v-if="state.errors.get(field.identifier)"
                 :id="`spearly-form-field-${field.identifier}-error`"
@@ -153,6 +166,7 @@ export type Props = {
 export type State = {
   form: { createdAt: Date | null } & Omit<SpearlyForm, 'createdAt'>
   answers: { [key: string]: string | string[]; _spearly_gotcha: string }
+  files: { [key: string]: string }
   errors: Map<string, string>
   error: boolean
   confirm: boolean
@@ -177,6 +191,7 @@ const state = reactive<State>({
     createdAt: null,
   },
   answers: { _spearly_gotcha: '' },
+  files: {},
   error: false,
   errors: new Map(),
   confirm: false,
@@ -194,7 +209,11 @@ const setFormData = async () => {
 
 const setAnswersObj = () => {
   state.form.fields.forEach((field) => {
-    state.answers[field.identifier] = field.inputType === 'checkbox' && field.data?.options.length ? [] : ''
+    state.answers[field.identifier] = field.inputType === 'checkbox' && field.data?.options?.length ? [] : ''
+
+    if (field.inputType === 'file') {
+      state.files[field.identifier] = ''
+    }
   })
 }
 
@@ -293,6 +312,25 @@ const onClick = () => {
     return
   }
   submit(state.answers)
+}
+
+const onChangeFile = (event: Event, identifier: string) => {
+  const files = (event.target as HTMLInputElement).files
+
+  if (!files) return
+  if (!files.length) {
+    state.answers[identifier] = ''
+    state.files[identifier] = ''
+  }
+
+  const fileReader = new FileReader()
+
+  fileReader.onload = () => {
+    state.answers[identifier] = fileReader.result as string
+    state.files[identifier] = files[0].name
+  }
+
+  fileReader.readAsDataURL(files[0])
 }
 
 const submit = async (fields: { [key: string]: unknown } & { _spearly_gotcha: string }) => {
