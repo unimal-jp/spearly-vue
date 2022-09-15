@@ -84,7 +84,7 @@
                   <input
                     :id="field.identifier"
                     :required="field.required"
-                    :accept="field.data?.fileExtensions?.map((extension) => `.${extension}`).join(',')"
+                    :accept="field.data?.allowedExtensions?.map((extension) => `.${extension}`).join(',')"
                     type="file"
                     class="spearly-form-file-input"
                     @change="onChangeFile($event, field.identifier)"
