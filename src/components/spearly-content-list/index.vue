@@ -15,6 +15,7 @@
 
 <script lang="ts" setup>
 import { inject, reactive, computed, watch, onBeforeUnmount } from 'vue'
+import type { PropType } from 'vue'
 import { SpearlyApiClient, SpearlyContent, SpearlyGetParams } from '@spearly/sdk-js'
 
 export type State = {
@@ -33,9 +34,12 @@ const props = defineProps({
   offset: { type: Number },
   order: { type: String },
   orderBy: { type: String },
+  orders: { type: Object as PropType<SpearlyGetParams['orders']> },
   filterBy: { type: String },
-  filterValue: { type: String },
+  filterValue: { type: [String, Array] as PropType<string | string[]> },
   filterRef: { type: String },
+  filterMode: { type: String as PropType<'or' | 'and'> },
+  filters: { type: Object as PropType<SpearlyGetParams['filters']> },
   rangeFrom: { type: Date },
   rangeTo: { type: Date },
   wrapper: { type: [String, Object], default: 'div' },
@@ -66,9 +70,12 @@ const getList = async () => {
   if (props.offset) params.offset = props.offset
   if (props.order && ['asc', 'desc'].includes(props.order)) params.order = props.order as 'desc' | 'asc'
   if (props.orderBy) params.orderBy = props.orderBy
+  if (props.orders) params.orders = props.orders
   if (props.filterBy) params.filterBy = props.filterBy
   if (props.filterValue) params.filterValue = props.filterValue
   if (props.filterRef) params.filterRef = props.filterRef
+  if (props.filterMode) params.filterMode = props.filterMode
+  if (props.filters) params.filters = props.filters
   if (props.rangeFrom) params.rangeFrom = props.rangeFrom
   if (props.rangeTo) params.rangeTo = props.rangeTo
 
