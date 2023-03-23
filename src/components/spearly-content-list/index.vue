@@ -16,10 +16,10 @@
 <script lang="ts" setup>
 import { inject, reactive, computed, watch, onBeforeUnmount } from 'vue'
 import type { PropType } from 'vue'
-import { SpearlyApiClient, SpearlyContent, SpearlyGetParams } from '@spearly/sdk-js'
+import { SpearlyApiClient, Content, GetParams } from '@spearly/sdk-js'
 
 export type State = {
-  contents: SpearlyContent[]
+  contents: Content[]
   isLoaded: boolean
   next: number
   matchingContentsCount: number
@@ -34,12 +34,12 @@ const props = defineProps({
   offset: { type: Number },
   order: { type: String },
   orderBy: { type: String },
-  orders: { type: Object as PropType<SpearlyGetParams['orders']> },
+  orders: { type: Object as PropType<GetParams['orders']> },
   filterBy: { type: String },
   filterValue: { type: [String, Array] as PropType<string | string[]> },
   filterRef: { type: String },
   filterMode: { type: String as PropType<'or' | 'and'> },
-  filters: { type: Object as PropType<SpearlyGetParams['filters']> },
+  filters: { type: Object as PropType<GetParams['filters']> },
   rangeFrom: { type: Date },
   rangeTo: { type: Date },
   wrapper: { type: [String, Object], default: 'div' },
@@ -65,7 +65,7 @@ const paging = computed(() => ({
 const getList = async () => {
   if (!$spearly) return
 
-  const params: SpearlyGetParams = {}
+  const params: GetParams = {}
   if (props.limit) params.limit = props.limit
   if (props.offset) params.offset = props.offset
   if (props.order && ['asc', 'desc'].includes(props.order)) params.order = props.order as 'desc' | 'asc'

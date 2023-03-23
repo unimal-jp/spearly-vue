@@ -156,7 +156,7 @@
 <script lang="ts" setup>
 import { inject, reactive, computed, useSlots, onMounted, onUnmounted } from 'vue'
 import { SpearlyApiClient } from '@spearly/sdk-js'
-import type { SpearlyForm } from '@spearly/sdk-js'
+import type { Form } from '@spearly/sdk-js'
 
 export type Props = {
   id: string
@@ -164,7 +164,7 @@ export type Props = {
 }
 
 export type State = {
-  form: { createdAt: Date | null } & Omit<SpearlyForm, 'createdAt'>
+  form: { createdAt: Date | null } & Omit<Form, 'createdAt'>
   answers: { [key: string]: string | string[]; _spearly_gotcha: string }
   files: { [key: string]: string }
   errors: Map<string, string>
@@ -189,6 +189,16 @@ const state = reactive<State>({
     startedAt: null,
     endedAt: null,
     createdAt: null,
+    confirmationEmail: {
+      enabled: false,
+      name: '',
+      description: '',
+    },
+    confirmationScreen: {
+      enabled: false,
+      backButtonLabel: '',
+      submitButtonLabel: '',
+    },
   },
   answers: { _spearly_gotcha: '' },
   files: {},

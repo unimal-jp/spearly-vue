@@ -11,7 +11,7 @@
 
 <script lang="ts" setup>
 import { defineProps, reactive, inject, onBeforeUnmount } from 'vue'
-import { SpearlyApiClient, SpearlyContent } from '@spearly/sdk-js'
+import { SpearlyApiClient, Content } from '@spearly/sdk-js'
 
 export type Props = {
   id: string
@@ -25,8 +25,8 @@ export type State = {
       createdAt: Date | null
       updatedAt: Date | null
       publishedAt: Date | null
-    } & Omit<SpearlyContent['attributes'], 'createdAt' | 'updatedAt' | 'publishedAt'>
-  } & Omit<SpearlyContent, 'attributes'>
+    } & Omit<Content['attributes'], 'createdAt' | 'updatedAt' | 'publishedAt'>
+  } & Omit<Content, 'attributes'>
   isLoaded: boolean
 }
 

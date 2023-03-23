@@ -8,9 +8,20 @@ const getFormLatestMockData = {
   name: 'Contact Form',
   description: 'this is contact form.',
   thankYouMessage: 'Thank you for message.',
+  confirmationEmail: {
+    enabled: true,
+    name: 'e-mail',
+    description: 'description',
+  },
+  confirmationScreen: {
+    enabled: true,
+    backButtonLabel: 'back',
+    submitButtonLabel: 'submit',
+  },
   fields: [
     {
       identifier: 'name',
+      description: '',
       inputType: 'text',
       name: 'Name',
       order: 1,
@@ -38,6 +49,7 @@ const getFormLatestMockData = {
     {
       identifier: 'content',
       inputType: 'text_area',
+      description: '',
       name: 'Content',
       order: 4,
       required: true,
@@ -47,7 +59,7 @@ const getFormLatestMockData = {
   startedAt: null,
   endedAt: null,
   createdAt: new Date('2022-06-06'),
-} as const
+}
 
 const getFormLatestDefaultMock = jest.fn().mockResolvedValue(getFormLatestMockData)
 const postFormAnswerDefaultMock = jest.fn().mockResolvedValue({})
