@@ -42,13 +42,14 @@
               <template v-else-if="['text', 'number', 'email', 'tel', 'url'].includes(field.inputType)">
                 <input
                   :id="field.identifier"
-                  v-model="state.answers[field.identifier]"
+                  :value="state.answers[field.identifier]"
                   :required="field.required"
                   :disabled="!isActive"
                   :aria-invalid="!!state.errors.get(field.identifier)"
                   :aria-describedby="field.description ? `${field.identifier}-description` : undefined"
                   :type="field.inputType"
                   class="spearly-form-input"
+                  @input="onInput(field.identifier, $event)"
                 />
               </template>
 
@@ -327,6 +328,11 @@ const validate = () => {
 const hasError = computed(() => {
   return !!state.errors.size
 })
+
+const onInput = (identifier: string, event: Event) => {
+  if (!event.target || !(event.target instanceof HTMLInputElement)) return
+  state.answers[identifier] = event.target.value
+}
 
 const onClick = () => {
   if (!state.confirm) {
