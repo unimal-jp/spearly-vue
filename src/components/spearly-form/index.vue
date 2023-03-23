@@ -286,7 +286,7 @@ const validate = () => {
   })
 
   numberFields.forEach((identifier) => {
-    if (state.answers[identifier] && !/^[0-9]+$/.test(state.answers[identifier] as string)) {
+    if (state.answers[identifier] && !/^[\-\+0-9]+$/.test(state.answers[identifier] as string)) {
       state.errors.set(identifier, '数字を入力してください。')
     }
   })
