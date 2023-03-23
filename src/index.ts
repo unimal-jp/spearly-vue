@@ -13,7 +13,7 @@ export type PluginOptions = {
 
 const plugin = {
   install(app: any, options: PluginOptions) {
-    const apiClient = new SpearlyApiClient('api.spearly.com', options.apiKey)
+    const apiClient = new SpearlyApiClient(options.apiKey)
     app.config.globalProperties.$spearly = apiClient
     app.provide('$spearly', apiClient)
     app.component('spearly-content-list', SpearlyContentList)
