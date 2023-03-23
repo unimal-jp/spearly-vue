@@ -28,12 +28,12 @@ const getFormLatestMockData = {
       required: false,
     },
     {
-      description: 'Please your email address',
-      identifier: 'email',
-      inputType: 'text',
-      name: 'e-mail Address',
-      order: 2,
-      required: true,
+      identifier: 'tel',
+      description: 'Please fill your phone number.',
+      inputType: 'tel',
+      name: 'Phone',
+      order: 1,
+      required: false,
     },
     {
       data: {
@@ -184,40 +184,40 @@ describe('SpearlyForm', () => {
     describe('display fields', () => {
       describe('label', () => {
         it('show label', () => {
-          expect(wrapper.findAll('.spearly-form-label')[0].text()).toBe('Name')
+          expect(wrapper.findAll('.spearly-form-label')[1].text()).toBe('Name')
         })
 
         it('if required field, show required mark', () => {
-          expect(wrapper.findAll('.spearly-form-label')[1].find('.spearly-form-label-required').text()).toBe('*')
+          expect(wrapper.findAll('.spearly-form-label')[4].find('.spearly-form-label-required').text()).toBe('*')
         })
       })
 
       describe('description', () => {
         it('if description is set, show description text', () => {
-          const $description = wrapper.findAll('.spearly-form-fieldset')[1].find('.spearly-form-field-description')
-          expect($description.text()).toBe('Please your email address')
-          expect($description.attributes('id')).toBe('email-description')
+          const $description = wrapper.findAll('.spearly-form-fieldset')[2].find('.spearly-form-field-description')
+          expect($description.text()).toBe('Please fill your phone number.')
+          expect($description.attributes('id')).toBe('tel-description')
         })
 
         it('if description is set, aria-describedby should be specified for input element', () => {
           expect(
-            wrapper.findAll('.spearly-form-fieldset')[1].find('.spearly-form-input').attributes('aria-describedby')
-          ).toBe('email-description')
+            wrapper.findAll('.spearly-form-fieldset')[2].find('.spearly-form-input').attributes('aria-describedby')
+          ).toBe('tel-description')
         })
 
         it('if no description is set, no DOM is created', () => {
-          expect(wrapper.findAll('.spearly-form-fieldset')[0].findAll('.spearly-form-field-description')).toEqual([])
+          expect(wrapper.findAll('.spearly-form-fieldset')[1].findAll('.spearly-form-field-description')).toEqual([])
         })
 
         it('if no description is set, aria-describedby should not be specified for input element', () => {
           expect(
-            wrapper.findAll('.spearly-form-fieldset')[0].find('.spearly-form-input').attributes('aria-describedby')
+            wrapper.findAll('.spearly-form-fieldset')[1].find('.spearly-form-input').attributes('aria-describedby')
           ).toBeUndefined()
         })
       })
 
       it('elements should be displayed according to inputType', () => {
-        expect(wrapper.findAll('.spearly-form-input').length).toBe(2)
+        expect(wrapper.findAll('.spearly-form-input').length).toBe(3)
         expect(wrapper.findAll('.spearly-form-radio').length).toBe(2)
         expect(wrapper.findAll('.spearly-form-textarea').length).toBe(1)
       })
@@ -225,12 +225,12 @@ describe('SpearlyForm', () => {
 
     describe('submit button action', () => {
       it('if everything has been filled, move to the confirmation screen', async () => {
-        wrapper.findAll('.spearly-form-input')[0].setValue('example name')
-        wrapper.findAll('.spearly-form-input')[1].setValue('test@example.com')
+        wrapper.findAll('.spearly-form-input')[0].setValue('test@example.com')
+        wrapper.findAll('.spearly-form-input')[1].setValue('example name')
         wrapper.findAll('.spearly-form-textarea')[0].setValue('text')
         wrapper.find('.spearly-form-submit').trigger('click')
         await flushPromises()
-        expect(wrapper.findAll('.spearly-form-answer-confirm').length).toBe(4)
+        expect(wrapper.findAll('.spearly-form-answer-confirm').length).toBe(5)
       })
     })
 
@@ -281,7 +281,7 @@ describe('SpearlyForm', () => {
         wrapper.find('.spearly-form-submit').trigger('click')
         await flushPromises()
         expect(wrapper.find('.spearly-form-error').text()).toBe('入力されていない項目があります。')
-        expect(wrapper.findAll('.spearly-form-field-error')[0].text()).toBe('電話番号を入力してください。')
+        expect(wrapper.findAll('.spearly-form-field-error')[1].text()).toBe('電話番号を入力してください。')
       })
 
       it('if the value in the url field is not an url, an error should be displayed', async () => {
@@ -302,20 +302,20 @@ describe('SpearlyForm', () => {
         wrapper.find('.spearly-form-submit').trigger('click')
         await flushPromises()
         expect(wrapper.find('.spearly-form-error').text()).toBe('入力されていない項目があります。')
-        expect(wrapper.findAll('.spearly-form-field-error')[0].text()).toBe('URLを入力してください。')
+        expect(wrapper.findAll('.spearly-form-field-error')[1].text()).toBe('URLを入力してください。')
       })
     })
 
     describe('confirm screen', () => {
       beforeEach(() => {
-        wrapper.findAll('.spearly-form-input')[0].setValue('example name')
-        wrapper.findAll('.spearly-form-input')[1].setValue('test@example.com')
+        wrapper.findAll('.spearly-form-input')[0].setValue('test@example.com')
+        wrapper.findAll('.spearly-form-input')[1].setValue('example name')
         wrapper.findAll('.spearly-form-textarea')[0].setValue('text')
         wrapper.find('.spearly-form-submit').trigger('click')
       })
 
       it('back button should appear', () => {
-        expect(wrapper.find('.spearly-form-back').text()).toBe('戻る')
+        expect(wrapper.find('.spearly-form-back').text()).toBe('back')
       })
 
       it('should return to the input screen after pressing the back button', async () => {
@@ -327,8 +327,8 @@ describe('SpearlyForm', () => {
 
     describe('submit form', () => {
       beforeEach(() => {
-        wrapper.findAll('.spearly-form-input')[0].setValue('example name')
-        wrapper.findAll('.spearly-form-input')[1].setValue('test@example.com')
+        wrapper.findAll('.spearly-form-input')[0].setValue('test@example.com')
+        wrapper.findAll('.spearly-form-input')[1].setValue('example name')
         wrapper.findAll('.spearly-form-textarea')[0].setValue('text')
         wrapper.find('.spearly-form-submit').trigger('click')
         wrapper.find('.spearly-form-submit').trigger('click')
@@ -337,8 +337,8 @@ describe('SpearlyForm', () => {
       it('postFormAnswers is called when clicked on the confirm screen', () => {
         expect(postFormAnswersMock).toHaveBeenCalledWith(1, {
           _spearly_gotcha: '',
+          confirmation_email: 'test@example.com',
           name: 'example name',
-          email: 'test@example.com',
           content: 'text',
         })
       })
@@ -347,8 +347,8 @@ describe('SpearlyForm', () => {
         const rejectMock = jest.fn().mockRejectedValue({})
         const res = wrapperFactory({ id: 'FORM_ID' }, getFormLatestDefaultMock, rejectMock)
         await flushPromises()
-        res.wrapper.findAll('.spearly-form-input')[0].setValue('example name')
-        res.wrapper.findAll('.spearly-form-input')[1].setValue('test@example.com')
+        res.wrapper.findAll('.spearly-form-input')[0].setValue('test@example.com')
+        res.wrapper.findAll('.spearly-form-input')[1].setValue('example name')
         res.wrapper.findAll('.spearly-form-textarea')[0].setValue('text')
         res.wrapper.find('.spearly-form-submit').trigger('click')
         res.wrapper.find('.spearly-form-submit').trigger('click')

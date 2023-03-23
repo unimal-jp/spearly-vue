@@ -202,7 +202,7 @@ const state = reactive<State>({
       submitButtonLabel: '',
     },
   },
-  answers: { _spearly_gotcha: '' },
+  answers: { _spearly_gotcha: '', confirmation_email: '' },
   files: {},
   error: false,
   errors: new Map(),
@@ -216,6 +216,17 @@ const setFormData = async () => {
   if (!$spearly) return
   const res = await $spearly.getFormLatest(props.id)
   state.form = res
+
+  if (res.confirmationEmail.enabled && !state.form.fields.find((field) => field.identifier === 'confirmation_email')) {
+    state.form.fields.unshift({
+      identifier: 'confirmation_email',
+      name: res.confirmationEmail.name,
+      inputType: 'email',
+      description: res.confirmationEmail.description,
+      order: 0,
+      required: true,
+    })
+  }
 
   state.isLoaded = true
 }
