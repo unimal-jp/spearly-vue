@@ -42,13 +42,14 @@
               <template v-else-if="['text', 'number', 'email', 'tel', 'url'].includes(field.inputType)">
                 <input
                   :id="field.identifier"
-                  v-model="state.answers[field.identifier]"
+                  :value="state.answers[field.identifier]"
                   :required="field.required"
                   :disabled="!isActive"
                   :aria-invalid="!!state.errors.get(field.identifier)"
                   :aria-describedby="field.description ? `${field.identifier}-description` : undefined"
                   :type="field.inputType"
                   class="spearly-form-input"
+                  @input="onInput(field.identifier, $event)"
                 />
               </template>
 
@@ -129,11 +130,13 @@
 
             <div class="spearly-form-btns">
               <button :disabled="!isActive" class="spearly-form-submit" @click="onClick">
-                <span>送信</span>
+                <span>{{
+                  state.form.confirmationScreen.enabled ? state.form.confirmationScreen.submitButtonLabel : '送信'
+                }}</span>
               </button>
 
               <button v-if="state.confirm" class="spearly-form-back" @click="state.confirm = false">
-                <span>戻る</span>
+                <span>{{ state.form.confirmationScreen.backButtonLabel }}</span>
               </button>
             </div>
           </template>
@@ -156,7 +159,7 @@
 <script lang="ts" setup>
 import { inject, reactive, computed, useSlots, onMounted, onUnmounted } from 'vue'
 import { SpearlyApiClient } from '@spearly/sdk-js'
-import type { SpearlyForm } from '@spearly/sdk-js'
+import type { Form } from '@spearly/sdk-js'
 
 export type Props = {
   id: string
@@ -164,7 +167,7 @@ export type Props = {
 }
 
 export type State = {
-  form: { createdAt: Date | null } & Omit<SpearlyForm, 'createdAt'>
+  form: { createdAt: Date | null } & Omit<Form, 'createdAt'>
   answers: { [key: string]: string | string[]; _spearly_gotcha: string }
   files: { [key: string]: string }
   errors: Map<string, string>
@@ -189,8 +192,18 @@ const state = reactive<State>({
     startedAt: null,
     endedAt: null,
     createdAt: null,
+    confirmationEmail: {
+      enabled: false,
+      name: '',
+      description: '',
+    },
+    confirmationScreen: {
+      enabled: false,
+      backButtonLabel: '',
+      submitButtonLabel: '',
+    },
   },
-  answers: { _spearly_gotcha: '' },
+  answers: { _spearly_gotcha: '', confirmation_email: '' },
   files: {},
   error: false,
   errors: new Map(),
@@ -204,6 +217,18 @@ const setFormData = async () => {
   if (!$spearly) return
   const res = await $spearly.getFormLatest(props.id)
   state.form = res
+
+  if (res.confirmationEmail.enabled && !state.form.fields.find((field) => field.identifier === 'confirmation_email')) {
+    state.form.fields.unshift({
+      identifier: 'confirmation_email',
+      name: res.confirmationEmail.name,
+      inputType: 'email',
+      description: res.confirmationEmail.description,
+      order: 0,
+      required: true,
+    })
+  }
+
   state.isLoaded = true
 }
 
@@ -273,7 +298,7 @@ const validate = () => {
   })
 
   numberFields.forEach((identifier) => {
-    if (state.answers[identifier] && !/^[0-9]+$/.test(state.answers[identifier] as string)) {
+    if (state.answers[identifier] && !/^[\-\+0-9]+$/.test(state.answers[identifier] as string)) {
       state.errors.set(identifier, '数字を入力してください。')
     }
   })
@@ -304,12 +329,19 @@ const hasError = computed(() => {
   return !!state.errors.size
 })
 
+const onInput = (identifier: string, event: Event) => {
+  if (!event.target || !(event.target instanceof HTMLInputElement)) return
+  state.answers[identifier] = event.target.value
+}
+
 const onClick = () => {
   if (!state.confirm) {
     validate()
     if (hasError.value) return
-    state.confirm = true
-    return
+    if (state.form.confirmationScreen.enabled) {
+      state.confirm = true
+      return
+    }
   }
   submit(state.answers)
 }

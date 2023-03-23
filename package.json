@@ -4,7 +4,6 @@
   "description": "This package allows you to easily implement Spearly in your Vue project!",
   "main": "dist/cjs/spearly-vue.js",
   "module": "dist/esm/spearly-vue.js",
-  "unpkg": "dist/umd/spearly-vue.js",
   "types": "dist/cjs/index.d.ts",
   "scripts": {
     "lint": "eslint --ext .ts,.tsx,.vue --ignore-path .eslintignore . || exit 0",
@@ -67,7 +66,7 @@
     "vue-template-compiler": "^2.6.14"
   },
   "dependencies": {
-    "@spearly/sdk-js": "1.0.0-next.10",
+    "@spearly/sdk-js": "^1.1.1",
     "@vue/compiler-sfc": "^3.2.33",
     "typescript": "^4.6.4"
   },
