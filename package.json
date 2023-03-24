@@ -1,6 +1,6 @@
 {
   "name": "@spearly/vue",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "This package allows you to easily implement Spearly in your Vue project!",
   "main": "dist/cjs/spearly-vue.js",
   "module": "dist/esm/spearly-vue.js",
