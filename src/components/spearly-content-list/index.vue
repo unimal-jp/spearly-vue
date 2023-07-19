@@ -42,8 +42,6 @@ const props = defineProps({
   filters: { type: Object as PropType<GetParams['filters']> },
   rangeFrom: { type: Date },
   rangeTo: { type: Date },
-  sessionId: { type: String },
-  patternName: { type: String as PropType<'a' | 'b'> },
   wrapper: { type: [String, Object], default: 'div' },
   item: { type: [String, Object], default: 'div' },
   loading: { type: [String, Object] },
@@ -80,8 +78,6 @@ const getList = async () => {
   if (props.filters) params.filters = props.filters
   if (props.rangeFrom) params.rangeFrom = props.rangeFrom
   if (props.rangeTo) params.rangeTo = props.rangeTo
-  if (props.sessionId) params.sessionId = props.sessionId
-  if (props.patternName) params.patternName = props.patternName
 
   const res = await $spearly.getList(props.id, Object.keys(params).length ? params : undefined)
 

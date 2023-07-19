@@ -3,14 +3,8 @@ import SpearlyContent from './index.vue'
 
 describe('SpearlyContent', () => {
   let wrapper: VueWrapper
-  const getContentMock = jest.fn().mockResolvedValue({
-    attributes: {
-      patternName: 'a',
-    },
-    id: '1',
-  })
+  const getContentMock = jest.fn().mockResolvedValue({})
   const getContentPreviewMock = jest.fn().mockResolvedValue({})
-  const pageViewMock = jest.fn().mockResolvedValue({})
 
   beforeEach(() => {
     wrapper = mount(SpearlyContent, {
@@ -22,9 +16,6 @@ describe('SpearlyContent', () => {
           $spearly: {
             getContent: getContentMock,
             getContentPreview: getContentPreviewMock,
-          },
-          $spearlyAnalytics: {
-            pageView: pageViewMock,
           },
         },
       },
@@ -44,7 +35,7 @@ describe('SpearlyContent', () => {
 
   describe('get content', () => {
     it('call getContent if preview-token prop is not specified', () => {
-      expect(getContentMock).toHaveBeenCalledWith('CONTENT_ID', {})
+      expect(getContentMock).toHaveBeenCalledWith('CONTENT_ID')
     })
 
     it('call getContentPreview if preview-token prop is specified', () => {
@@ -58,9 +49,6 @@ describe('SpearlyContent', () => {
             $spearly: {
               getContent: getContentMock,
               getContentPreview: getContentPreviewMock,
-            },
-            $spearlyAnalytics: {
-              pageView: pageViewMock,
             },
           },
         },

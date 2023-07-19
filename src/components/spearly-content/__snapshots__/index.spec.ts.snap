@@ -3,8 +3,7 @@
 exports[`SpearlyContent initialized snapshot 1`] = `
 <div>
   
-  
-  
+  <!--v-if-->
   
 </div>
 `;
