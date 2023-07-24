@@ -226,6 +226,7 @@ const setFormData = async () => {
       description: res.confirmationEmail.description,
       order: 0,
       required: true,
+      validationRegex: '',
     })
   }
 
@@ -310,7 +311,12 @@ const validate = () => {
   })
 
   telFields.forEach((identifier) => {
-    if (state.answers[identifier] && !/^[0-9\-]+$/.test(state.answers[identifier] as string)) {
+    const field = state.form.fields.find((field) => field.identifier === identifier)!
+    if (!field.validationRegex) return
+
+    const regex = new RegExp(field.validationRegex)
+
+    if (state.answers[identifier] && !regex.test(state.answers[identifier] as string)) {
       state.errors.set(identifier, '電話番号を入力してください。')
     }
   })
