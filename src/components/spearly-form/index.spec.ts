@@ -287,7 +287,9 @@ describe('SpearlyForm', () => {
         wrapper.find('.spearly-form-submit').trigger('click')
         await flushPromises()
         expect(wrapper.find('.spearly-form-error').text()).toBe('入力されていない項目があります。')
-        expect(wrapper.findAll('.spearly-form-field-error')[1].text()).toBe('電話番号を入力してください。')
+        expect(wrapper.findAll('.spearly-form-field-error')[1].text()).toBe(
+          '電話番号（半角数字とハイフン）を入力してください。'
+        )
       })
 
       it('if the value in the url field is not an url, an error should be displayed', async () => {
