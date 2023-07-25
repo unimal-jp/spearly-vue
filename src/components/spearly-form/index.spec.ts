@@ -26,6 +26,7 @@ const getFormLatestMockData = {
       name: 'Name',
       order: 1,
       required: false,
+      validationRegex: '',
     },
     {
       identifier: 'tel',
@@ -34,6 +35,7 @@ const getFormLatestMockData = {
       name: 'Phone',
       order: 1,
       required: false,
+      validationRegex: '/^[+]?\\d+-\\d+-\\d+$/',
     },
     {
       data: {
@@ -45,6 +47,7 @@ const getFormLatestMockData = {
       name: 'Subject',
       order: 3,
       required: false,
+      validationRegex: '',
     },
     {
       identifier: 'content',
@@ -53,6 +56,7 @@ const getFormLatestMockData = {
       name: 'Content',
       order: 4,
       required: true,
+      validationRegex: '',
     },
   ],
   callbackUrl: '',
@@ -251,6 +255,7 @@ describe('SpearlyForm', () => {
               name: 'Email',
               order: 1,
               required: false,
+              validationRegex: '',
             },
           ],
         })
@@ -272,6 +277,7 @@ describe('SpearlyForm', () => {
               name: 'TEL',
               order: 1,
               required: false,
+              validationRegex: '/^[+]?\\d+-\\d+-\\d+$/',
             },
           ],
         })
@@ -293,6 +299,7 @@ describe('SpearlyForm', () => {
               name: 'URL',
               order: 1,
               required: false,
+              validationRegex: '',
             },
           ],
         })
