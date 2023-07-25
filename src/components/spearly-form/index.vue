@@ -317,7 +317,8 @@ const validate = () => {
     const regex = new RegExp(field.validationRegex)
 
     if (state.answers[identifier] && !regex.test(state.answers[identifier] as string)) {
-      state.errors.set(identifier, '電話番号を入力してください。')
+      const format = field.validationRegex === '^[+]?\\d+$' ? 'ハイフンなし' : '半角数字とハイフン'
+      state.errors.set(identifier, `電話番号（${format}）を入力してください。`)
     }
   })
 
