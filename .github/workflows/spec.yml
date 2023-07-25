@@ -1,8 +1,11 @@
 name: Spec Test
 
 on:
+  push:
+    branches:
+      - 'main'
   pull_request:
-    types: [opened]
+    types: [opened, edited]
 
 jobs:
   spec:
