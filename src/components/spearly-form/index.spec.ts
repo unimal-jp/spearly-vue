@@ -58,6 +58,18 @@ const getFormLatestMockData = {
       required: true,
       validationRegex: '',
     },
+    {
+      identifier: 'select',
+      inputType: 'select_box',
+      description: '',
+      name: 'Select',
+      order: 5,
+      required: false,
+      validationRegex: '',
+      data: {
+        options: ['s1', 's2', 's3'],
+      },
+    },
   ],
   callbackUrl: '',
   startedAt: null,
@@ -224,6 +236,7 @@ describe('SpearlyForm', () => {
         expect(wrapper.findAll('.spearly-form-input').length).toBe(3)
         expect(wrapper.findAll('.spearly-form-radio').length).toBe(2)
         expect(wrapper.findAll('.spearly-form-textarea').length).toBe(1)
+        expect(wrapper.findAll('.spearly-form-select').length).toBe(1)
       })
     })
 
@@ -234,7 +247,7 @@ describe('SpearlyForm', () => {
         wrapper.findAll('.spearly-form-textarea')[0].setValue('text')
         wrapper.find('.spearly-form-submit').trigger('click')
         await flushPromises()
-        expect(wrapper.findAll('.spearly-form-answer-confirm').length).toBe(5)
+        expect(wrapper.findAll('.spearly-form-answer-confirm').length).toBe(6)
       })
     })
 
@@ -339,6 +352,7 @@ describe('SpearlyForm', () => {
         wrapper.findAll('.spearly-form-input')[0].setValue('test@example.com')
         wrapper.findAll('.spearly-form-input')[1].setValue('example name')
         wrapper.findAll('.spearly-form-textarea')[0].setValue('text')
+        wrapper.findAll('.spearly-form-select')[0].setValue('s1')
         wrapper.find('.spearly-form-submit').trigger('click')
         wrapper.find('.spearly-form-submit').trigger('click')
       })
@@ -349,6 +363,7 @@ describe('SpearlyForm', () => {
           confirmation_email: 'test@example.com',
           name: 'example name',
           content: 'text',
+          select: 's1',
         })
       })
 
@@ -359,6 +374,7 @@ describe('SpearlyForm', () => {
         res.wrapper.findAll('.spearly-form-input')[0].setValue('test@example.com')
         res.wrapper.findAll('.spearly-form-input')[1].setValue('example name')
         res.wrapper.findAll('.spearly-form-textarea')[0].setValue('text')
+        res.wrapper.findAll('.spearly-form-select')[0].setValue('s1')
         res.wrapper.find('.spearly-form-submit').trigger('click')
         res.wrapper.find('.spearly-form-submit').trigger('click')
         await flushPromises()

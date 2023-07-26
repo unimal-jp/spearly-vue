@@ -86,11 +86,28 @@
                     :id="field.identifier"
                     :required="field.required"
                     :accept="field.data?.allowedExtensions?.map((extension) => `.${extension}`).join(',')"
+                    :disabled="!isActive"
                     type="file"
                     class="spearly-form-file-input"
                     @change="onChangeFile($event, field.identifier)"
                   />
                 </label>
+              </template>
+
+              <template v-else-if="field.inputType === 'select_box' && field.data">
+                <select
+                  :id="field.identifier"
+                  v-model="state.answers[field.identifier]"
+                  :required="field.required"
+                  :disabled="!isActive"
+                  :aria-invalid="!!state.errors.get(field.identifier)"
+                  :aria-describedby="field.description ? `${field.identifier}-description` : undefined"
+                  class="spearly-form-select"
+                >
+                  <option v-for="(option, i) in field.data.options" :key="i" :value="option">
+                    {{ option }}
+                  </option>
+                </select>
               </template>
 
               <p
