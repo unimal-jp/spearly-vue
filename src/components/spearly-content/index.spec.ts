@@ -15,6 +15,7 @@ describe('SpearlyContent', () => {
   beforeEach(() => {
     wrapper = mount(SpearlyContent, {
       props: {
+        contentTypeId: 'CONTENT_TYPE_ID',
         id: 'CONTENT_ID',
       },
       global: {
@@ -44,12 +45,13 @@ describe('SpearlyContent', () => {
 
   describe('get content', () => {
     it('call getContent if preview-token prop is not specified', () => {
-      expect(getContentMock).toHaveBeenCalledWith('CONTENT_ID', {})
+      expect(getContentMock).toHaveBeenCalledWith('CONTENT_TYPE_ID', 'CONTENT_ID', {})
     })
 
     it('call getContentPreview if preview-token prop is specified', () => {
       wrapper = mount(SpearlyContent, {
         props: {
+          contentTypeId: 'CONTENT_TYPE_ID',
           id: 'CONTENT_ID',
           previewToken: 'TOKEN',
         },
@@ -65,7 +67,7 @@ describe('SpearlyContent', () => {
           },
         },
       })
-      expect(getContentPreviewMock).toHaveBeenCalledWith('CONTENT_ID', 'TOKEN')
+      expect(getContentPreviewMock).toHaveBeenCalledWith('CONTENT_TYPE_ID', 'CONTENT_ID', 'TOKEN')
     })
   })
 })

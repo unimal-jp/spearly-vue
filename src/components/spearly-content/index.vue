@@ -15,6 +15,7 @@ import type { SpearlyApiClient, SpearlyAnalytics, Content, GetContentParams } fr
 
 export type Props = {
   id: string
+  contentTypeId: string
   patternName?: 'a' | 'b'
   previewToken?: string
   loading?: string
@@ -63,11 +64,11 @@ const getContent = async () => {
     const params: GetContentParams = {}
     if (props.patternName) params.patternName = props.patternName
 
-    const res = await $spearly.getContent(props.id, params)
+    const res = await $spearly.getContent(props.contentTypeId, props.id, params)
 
     state.content = res
   } else {
-    const res = await $spearly.getContentPreview(props.id, props.previewToken)
+    const res = await $spearly.getContentPreview(props.contentTypeId, props.id, props.previewToken)
     state.content = res
   }
 
