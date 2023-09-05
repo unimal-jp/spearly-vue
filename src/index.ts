@@ -1,6 +1,8 @@
 import { SpearlyApiClient, SpearlyAnalytics } from '@spearly/sdk-js'
 import { SpearlyContentList, SpearlyContent, SpearlyForm } from './components'
 
+export { useSpearly } from './composables'
+
 declare module '@vue/runtime-core' {
   export interface ComponentCustomProperties {
     $spearly: SpearlyApiClient
