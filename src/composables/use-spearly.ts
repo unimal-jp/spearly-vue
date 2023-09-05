@@ -15,15 +15,15 @@ export const useSpearly = () => {
     return await apiClient.getList(contentTypeId, params)
   }
 
-  const getContent = async (id: string, params?: GetContentParams) => {
-    const response = await apiClient.getContent(id, params)
+  const getContent = async (contentTypeId: string, id: string, params?: GetContentParams) => {
+    const response = await apiClient.getContent(contentTypeId, id, params)
     contentId.value = response.id
     contentPatternName.value = response.attributes.patternName
     return response
   }
 
-  const getContentPreview = async (id: string, previewToken: string) => {
-    return await apiClient.getContentPreview(id, previewToken)
+  const getContentPreview = async (contentTypeId: string, id: string, previewToken: string) => {
+    return await apiClient.getContentPreview(contentTypeId, id, previewToken)
   }
 
   const getFormLatest = async (publicUid: string) => {

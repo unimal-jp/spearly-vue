@@ -43,12 +43,12 @@ describe('spearly composable', () => {
     })
 
     it('Should be requested with specified arguments', () => {
-      spearly.getContent('CONTENT_ID', { distinctId: 'DISTINCT_ID' })
-      expect(spyGetContent).toHaveBeenCalledWith('CONTENT_ID', { distinctId: 'DISTINCT_ID' })
+      spearly.getContent('CONTENT_TYPE_ID', 'CONTENT_ID', { distinctId: 'DISTINCT_ID' })
+      expect(spyGetContent).toHaveBeenCalledWith('CONTENT_TYPE_ID', 'CONTENT_ID', { distinctId: 'DISTINCT_ID' })
     })
 
     it('Should be return content', async () => {
-      const res = await spearly.getContent('CONTENT_ID')
+      const res = await spearly.getContent('CONTENT_TYPE_ID', 'CONTENT_ID')
       expect(res).toEqual(createContentMock())
     })
   })
@@ -67,12 +67,12 @@ describe('spearly composable', () => {
     })
 
     it('Should be requested with specified arguments', () => {
-      spearly.getContentPreview('CONTENT_ID', 'PREVIEW_TOKEN')
-      expect(spyGetContentPreview).toHaveBeenCalledWith('CONTENT_ID', 'PREVIEW_TOKEN')
+      spearly.getContentPreview('CONTENT_TYPE_ID', 'CONTENT_ID', 'PREVIEW_TOKEN')
+      expect(spyGetContentPreview).toHaveBeenCalledWith('CONTENT_TYPE_ID', 'CONTENT_ID', 'PREVIEW_TOKEN')
     })
 
     it('Should be return content', async () => {
-      const res = await spearly.getContentPreview('CONTENT_ID', 'PREVIEW_TOKEN')
+      const res = await spearly.getContentPreview('CONTENT_TYPE_ID', 'CONTENT_ID', 'PREVIEW_TOKEN')
       expect(res).toEqual(createContentMock())
     })
   })
@@ -150,7 +150,7 @@ describe('spearly composable', () => {
       })
 
       it('If params is not specified, ID and patternName obtained by getContent should be used', async () => {
-        await spearly.getContent('CONTENT_ID')
+        await spearly.getContent('CONTENT_TYPE_ID', 'CONTENT_ID')
         await spearly.pageView()
         expect(spyPageView).toHaveBeenCalledWith({ patternName: 'b', contentId: '1' })
       })
@@ -180,7 +180,7 @@ describe('spearly composable', () => {
     })
 
     it('If params is not specified, ID and patternName obtained by getContent should be used', async () => {
-      await spearly.getContent('CONTENT_ID')
+      await spearly.getContent('CONTENT_TYPE_ID', 'CONTENT_ID')
       await spearly.conversion()
       expect(spyConversion).toHaveBeenCalledWith({ patternName: 'b', contentId: '1' })
     })
