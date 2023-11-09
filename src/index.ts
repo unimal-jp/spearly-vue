@@ -21,6 +21,7 @@ const plugin = {
 
     app.config.globalProperties.$spearly = apiClient
     app.config.globalProperties.$spearlyAnalytics = analytics
+    app.config.globalProperties.apiKey = options.apiKey
 
     app.provide('$spearly', apiClient)
     app.provide('$spearlyAnalytics', analytics)

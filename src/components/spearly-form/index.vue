@@ -174,8 +174,8 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, reactive, computed, useSlots, onMounted, onUnmounted } from 'vue'
-import { SpearlyApiClient } from '@spearly/sdk-js'
+import { reactive, computed, onMounted, onUnmounted } from 'vue'
+import { useSpearly } from '../../composables'
 import type { Form } from '@spearly/sdk-js'
 
 export type Props = {
@@ -194,7 +194,6 @@ export type State = {
   isLoaded: boolean
 }
 
-const slots = useSlots()
 const props = defineProps<Props>()
 const state = reactive<State>({
   form: {
@@ -229,10 +228,9 @@ const state = reactive<State>({
   isLoaded: false,
 })
 
-const $spearly = inject<SpearlyApiClient>('$spearly')
+const spearly = useSpearly()
 const setFormData = async () => {
-  if (!$spearly) return
-  const res = await $spearly.getFormLatest(props.id)
+  const res = await spearly.getFormLatest(props.id)
   state.form = res
 
   if (res.confirmationEmail.enabled && !state.form.fields.find((field) => field.identifier === 'confirmation_email')) {
@@ -390,9 +388,8 @@ const onChangeFile = (event: Event, identifier: string) => {
 }
 
 const submit = async (fields: { [key: string]: unknown } & { _spearly_gotcha: string }) => {
-  if (!$spearly) throw new Error('$spearly is not inject.')
   try {
-    await $spearly.postFormAnswers(state.form.id, fields)
+    await spearly.postFormAnswer(fields)
 
     if (typeof location !== 'undefined' && state.form.callbackUrl) {
       location.href = state.form.callbackUrl

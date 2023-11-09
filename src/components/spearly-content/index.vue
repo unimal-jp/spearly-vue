@@ -10,8 +10,9 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, reactive, inject, watch, onBeforeUnmount } from 'vue'
-import type { SpearlyApiClient, SpearlyAnalytics, Content, GetContentParams } from '@spearly/sdk-js'
+import { defineProps, reactive, watch, onBeforeUnmount } from 'vue'
+import { useSpearly } from 'src/composables'
+import type { Content, GetContentParams } from '@spearly/sdk-js'
 
 export type Props = {
   id: string
@@ -55,20 +56,17 @@ const state = reactive<State>({
   isLoaded: false,
 })
 
-const $spearly = inject<SpearlyApiClient>('$spearly')
-const $spearlyAnalytics = inject<SpearlyAnalytics>('$spearlyAnalytics')
+const spearly = useSpearly()
 const getContent = async () => {
-  if (!$spearly) return
-
   if (!props.previewToken) {
     const params: GetContentParams = {}
     if (props.patternName) params.patternName = props.patternName
 
-    const res = await $spearly.getContent(props.contentTypeId, props.id, params)
+    const res = await spearly.getContent(props.contentTypeId, props.id, params)
 
     state.content = res
   } else {
-    const res = await $spearly.getContentPreview(props.contentTypeId, props.id, props.previewToken)
+    const res = await spearly.getContentPreview(props.contentTypeId, props.id, props.previewToken)
     state.content = res
   }
 
@@ -80,11 +78,8 @@ getContent()
 watch(
   () => state.isLoaded,
   (value) => {
-    if (!$spearlyAnalytics || !value || props.previewToken) return
-    $spearlyAnalytics.pageView({
-      contentId: state.content.id,
-      patternName: state.content.attributes.patternName,
-    })
+    if (!value || props.previewToken) return
+    spearly.pageView()
   }
 )
 

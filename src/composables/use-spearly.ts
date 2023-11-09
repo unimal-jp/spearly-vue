@@ -11,7 +11,7 @@ export const useSpearly = () => {
   const contentPatternName = ref<'a' | 'b'>()
   const formVersion = ref<number>()
 
-  const getContentList = async (contentTypeId: string, params: GetParams) => {
+  const getContentList = async (contentTypeId: string, params?: GetParams) => {
     return await apiClient.getList(contentTypeId, params)
   }
 
