@@ -1,7 +1,9 @@
 name: Spec Test
 
 on:
-  push
+  push:
+    branches:
+      - main
   pull_request:
     types: [opened, edited]
 
