@@ -1,5 +1,7 @@
 import { mount, VueWrapper } from '@vue/test-utils'
+import * as composable from '../../composables'
 import SpearlyContent from '../../components/spearly-content/index.vue'
+import { createUseSpearlyMock } from '../createMock'
 
 describe('SpearlyContent', () => {
   let wrapper: VueWrapper
@@ -13,21 +15,19 @@ describe('SpearlyContent', () => {
   const pageViewMock = jest.fn().mockResolvedValue({})
 
   beforeEach(() => {
+    jest.mock('../../composables')
+
+    jest.spyOn(composable, 'useSpearly').mockReturnValue(
+      createUseSpearlyMock({
+        getContent: getContentMock,
+        getContentPreview: getContentPreviewMock,
+      })
+    )
+
     wrapper = mount(SpearlyContent, {
       props: {
         contentTypeId: 'CONTENT_TYPE_ID',
         id: 'CONTENT_ID',
-      },
-      global: {
-        provide: {
-          $spearly: {
-            getContent: getContentMock,
-            getContentPreview: getContentPreviewMock,
-          },
-          $spearlyAnalytics: {
-            pageView: pageViewMock,
-          },
-        },
       },
     })
   })
@@ -54,17 +54,6 @@ describe('SpearlyContent', () => {
           contentTypeId: 'CONTENT_TYPE_ID',
           id: 'CONTENT_ID',
           previewToken: 'TOKEN',
-        },
-        global: {
-          provide: {
-            $spearly: {
-              getContent: getContentMock,
-              getContentPreview: getContentPreviewMock,
-            },
-            $spearlyAnalytics: {
-              pageView: pageViewMock,
-            },
-          },
         },
       })
       expect(getContentPreviewMock).toHaveBeenCalledWith('CONTENT_TYPE_ID', 'CONTENT_ID', 'TOKEN')

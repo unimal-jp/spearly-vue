@@ -9,6 +9,9 @@ module.exports = {
       tsconfig: './tsconfig.test.json'
     }],
   },
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+  },
   transformIgnorePatterns: ['/node_modules/(?!(axios)/)'],
   testMatch: [
     '<rootDir>/src/**/*.spec.{js,ts}',
