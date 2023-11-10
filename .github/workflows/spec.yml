@@ -3,7 +3,7 @@ name: Spec Test
 on:
   push:
     tags-ignore:
-     - '**'
+      - '**'
   pull_request:
     types: [opened, edited]
 
