@@ -16,4 +16,7 @@ module.exports = {
   testMatch: [
     '<rootDir>/src/**/*.spec.{js,ts}',
   ],
+  testEnvironmentOptions: {
+    customExportConditions: ['node', 'node-addons'],
+  }
 }
