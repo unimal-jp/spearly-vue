@@ -1,1 +1,1 @@
-export * from './use-spearly'
+export { useSpearly } from './use-spearly'

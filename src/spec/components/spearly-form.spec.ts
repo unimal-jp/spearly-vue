@@ -1,4 +1,6 @@
 import { mount, flushPromises, VueWrapper } from '@vue/test-utils'
+import * as composable from '../../composables'
+import { createUseSpearlyMock } from '../createMock'
 import SpearlyForm from '../../components/spearly-form/index.vue'
 
 const getFormLatestMockData = {
@@ -88,15 +90,16 @@ const wrapperFactory = (
 ) => {
   const options: any = {
     props,
-    global: {
-      provide: {
-        $spearly: {
-          getFormLatest: getFormLatestMock,
-          postFormAnswers: postFormAnswersMock,
-        },
-      },
-    },
   }
+
+  jest.mock('../../composables')
+
+  jest.spyOn(composable, 'useSpearly').mockReturnValue(
+    createUseSpearlyMock({
+      getFormLatest: getFormLatestMock,
+      postFormAnswer: postFormAnswersMock,
+    })
+  )
 
   if (defaultSlots) options.slots = { default: defaultSlots }
 
@@ -358,7 +361,7 @@ describe('SpearlyForm', () => {
       })
 
       it('postFormAnswers is called when clicked on the confirm screen', () => {
-        expect(postFormAnswersMock).toHaveBeenCalledWith(1, {
+        expect(postFormAnswersMock).toHaveBeenCalledWith({
           _spearly_gotcha: '',
           confirmation_email: 'test@example.com',
           name: 'example name',

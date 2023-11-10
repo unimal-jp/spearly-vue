@@ -167,3 +167,29 @@ export const createFormAnswerResponse = (publicUid = 'FORM_ID') => ({
   },
   createdAt: new Date('2021-08-01'),
 })
+
+type UseSpearlyMockParams = {
+  getContent?: jest.Mock
+  getContentList?: jest.Mock
+  getContentPreview?: jest.Mock
+  getFormLatest?: jest.Mock
+  postFormAnswer?: jest.Mock
+  pageView?: jest.Mock
+  conversion?: jest.Mock
+}
+
+export const createUseSpearlyMock = (mocks: UseSpearlyMockParams = {}) => {
+  return Object.assign(
+    {},
+    {
+      getContent: jest.fn().mockResolvedValue(createContentMock),
+      getContentList: jest.fn().mockResolvedValue(createContentListMock),
+      getContentPreview: jest.fn().mockResolvedValue(createContentMock),
+      getFormLatest: jest.fn().mockResolvedValue(createFormMock),
+      postFormAnswer: jest.fn().mockResolvedValue(createFormAnswerResponse),
+      pageView: jest.fn().mockResolvedValue(undefined),
+      conversion: jest.fn().mockResolvedValue(undefined),
+    },
+    mocks
+  )
+}

@@ -11,7 +11,7 @@
 
 <script lang="ts" setup>
 import { defineProps, reactive, watch, onBeforeUnmount } from 'vue'
-import { useSpearly } from 'src/composables'
+import { useSpearly } from '../../composables'
 import type { Content, GetContentParams } from '@spearly/sdk-js'
 
 export type Props = {
