@@ -1,5 +1,5 @@
 import { mount, VueWrapper } from '@vue/test-utils'
-import SpearlyContent from './index.vue'
+import SpearlyContent from '../../components/spearly-content/index.vue'
 
 describe('SpearlyContent', () => {
   let wrapper: VueWrapper

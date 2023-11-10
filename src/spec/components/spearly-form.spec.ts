@@ -1,5 +1,5 @@
 import { mount, flushPromises, VueWrapper } from '@vue/test-utils'
-import SpearlyForm from './index.vue'
+import SpearlyForm from '../../components/spearly-form/index.vue'
 
 const getFormLatestMockData = {
   id: 1,

@@ -14,9 +14,10 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, reactive, computed, watch, onBeforeUnmount } from 'vue'
+import { reactive, computed, watch, onBeforeUnmount } from 'vue'
+import { useSpearly } from '../../composables'
 import type { PropType } from 'vue'
-import { SpearlyApiClient, Content, GetParams } from '@spearly/sdk-js'
+import type { Content, GetParams } from '@spearly/sdk-js'
 
 export type State = {
   contents: Content[]
@@ -26,7 +27,7 @@ export type State = {
   totalContentsCount: number
 }
 
-const $spearly = inject<SpearlyApiClient>('$spearly')
+const spearly = useSpearly()
 
 const props = defineProps({
   id: { type: String, required: true },
@@ -48,6 +49,7 @@ const props = defineProps({
   item: { type: [String, Object], default: 'div' },
   loading: { type: [String, Object] },
 })
+
 const state = reactive<State>({
   contents: [],
   isLoaded: false,
@@ -65,8 +67,6 @@ const paging = computed(() => ({
 }))
 
 const getList = async () => {
-  if (!$spearly) return
-
   const params: GetParams = {}
   if (props.limit) params.limit = props.limit
   if (props.offset) params.offset = props.offset
@@ -83,7 +83,7 @@ const getList = async () => {
   if (props.sessionId) params.sessionId = props.sessionId
   if (props.patternName) params.patternName = props.patternName
 
-  const res = await $spearly.getList(props.id, Object.keys(params).length ? params : undefined)
+  const res = await spearly.getContentList(props.id, Object.keys(params).length ? params : undefined)
 
   state.contents = res.data
   state.isLoaded = true

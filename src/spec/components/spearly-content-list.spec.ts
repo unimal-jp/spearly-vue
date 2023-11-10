@@ -1,6 +1,5 @@
-import { mount, flushPromises, VueWrapper, DOMWrapper } from '@vue/test-utils'
-import { SpearlyApiClient } from '@spearly/sdk-js'
-import SpearlyContentList from './index.vue'
+import { mount, VueWrapper } from '@vue/test-utils'
+import SpearlyContentList from '../../components/spearly-content-list/index.vue'
 
 const mockResponse = {
   data: [

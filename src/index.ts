@@ -1,6 +1,8 @@
 import { SpearlyApiClient, SpearlyAnalytics } from '@spearly/sdk-js'
 import { SpearlyContentList, SpearlyContent, SpearlyForm } from './components'
 
+export { useSpearly } from './composables'
+
 declare module '@vue/runtime-core' {
   export interface ComponentCustomProperties {
     $spearly: SpearlyApiClient
@@ -19,6 +21,7 @@ const plugin = {
 
     app.config.globalProperties.$spearly = apiClient
     app.config.globalProperties.$spearlyAnalytics = analytics
+    app.config.globalProperties.apiKey = options.apiKey
 
     app.provide('$spearly', apiClient)
     app.provide('$spearlyAnalytics', analytics)
